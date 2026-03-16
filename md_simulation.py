@@ -5,7 +5,6 @@ WATER_MODEL = None
 FORCE_FIELD = None
 WATERBOXFILE = None
 DISTANCE = None
-GMX = "gmx"
 
 def start():
     agent.initialization(PATH)
@@ -33,7 +32,6 @@ def system_build():
         DISTANCE=DISTANCE,
         WATER_MODEL=WATER_MODEL,
         WATERBOXFILE=WATERBOXFILE,
-        GMX = GMX
     ) else "error"
 
 def minimization():
