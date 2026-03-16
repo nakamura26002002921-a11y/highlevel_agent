@@ -5,13 +5,15 @@ WATER_MODEL = None
 FORCE_FIELD = None
 WATERBOXFILE = None
 DISTANCE = None
+GMX = "gmx"
+
 def start():
     agent.initialization(PATH)
     return "getpdbfile"
 
 def get_pdb():
     global PDB_PATH
-    result = agent.get_pdb(PATH, "1UAO")
+    result = agent.get_pdb(PATH, "1ALC")
     if not result:
         return "error"
     PDB_PATH = result
@@ -31,8 +33,9 @@ def system_build():
         pdb_path=PDB_PATH,
         FF=FORCE_FIELD,
         DISTANCE=DISTANCE,
-        WATER=WATER_MODEL,
-        WATER_MODEL=WATERBOXFILE,
+        WATER_MODEL=WATER_MODEL,
+        WATERBOXFILE=WATERBOXFILE,
+        GMX = GMX
     ) else "error"
 
 def minimization():
