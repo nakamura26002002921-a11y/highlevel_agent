@@ -13,6 +13,7 @@ def start():
     return "getpdbfile"
 
 def get_pdb():
+    global PDB_PATH
     result = agent.get_pdb(PATH, PDBID)
     if not result:
         return "error"
@@ -20,6 +21,7 @@ def get_pdb():
     return "simulation_set"
 
 def simulation_set():
+    global WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE
     result = agent.simulation_set(PATH,simulation_info)
     if not result:
         return "error"
