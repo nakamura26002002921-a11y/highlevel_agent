@@ -1,24 +1,26 @@
 import lowlevel_agent.md_simulation.agent as agent
 PATH = ""
+PDBID = ""
 PDB_PATH = None
 WATER_MODEL = None
 FORCE_FIELD = None
 WATERBOXFILE = None
 DISTANCE = None
+simulation_info = ""
 
 def start():
     agent.initialization(PATH)
     return "getpdbfile"
 
 def get_pdb():
-    result = agent.get_pdb(PATH, "1ALC")
+    result = agent.get_pdb(PATH, PDBID)
     if not result:
         return "error"
     PDB_PATH = result
     return "simulation_set"
 
 def simulation_set():
-    result = agent.simulation_set(PATH)
+    result = agent.simulation_set(PATH,simulation_info)
     if not result:
         return "error"
     WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE = result
