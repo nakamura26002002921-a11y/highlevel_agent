@@ -6,11 +6,12 @@ WATER_MODEL = None
 FORCE_FIELD = None
 WATERBOXFILE = None
 DISTANCE = None
+REFERENCE_MDP_PATH = None
 simulation_info = ""
 
 def start():
     agent.initialization(PATH)
-    return "getpdbfile"
+    return "get_pdb"
 
 def get_pdb():
     global PDB_PATH
@@ -20,6 +21,9 @@ def get_pdb():
     PDB_PATH = result
     return "simulation_set"
 
+def copy_mdp():
+    return "minimization" if agent.copy_mdp(PATH, REFERENCE_MDP_PATH) else "error"
+    
 def simulation_set():
     global WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE
     result = agent.simulation_set(PATH,simulation_info)
@@ -56,7 +60,8 @@ def error():
 
 FUNCTIONS = {
     "start": start,
-    "getpdbfile": get_pdb,
+    "get_pdb": get_pdb,
+    "copy_mdp":copy_mdp,
     "simulation_set": simulation_set,
     "system_build": system_build,
     "minimization": minimization,
