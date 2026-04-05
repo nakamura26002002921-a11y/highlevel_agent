@@ -8,6 +8,7 @@ WATERBOXFILE = None
 DISTANCE = None
 REFERENCE_MDP_PATH = None
 simulation_info = ""
+GMX = None
 
 def start():
     agent.initialization(PATH)
@@ -40,19 +41,33 @@ def system_build():
         DISTANCE=DISTANCE,
         WATER_MODEL=WATER_MODEL,
         WATERBOXFILE=WATERBOXFILE,
+        # GMX = GMX,
+        # PYMOL = PYMOL,
     ) else "error"
 
 def minimization():
-    return "nvt" if agent.minimization(PATH) else "error"
+    return "nvt" if agent.minimization(
+        PATH,
+        # GMX = GMX,
+    ) else "error"
 
 def nvt():
-    return "npt_br" if agent.nvt(PATH) else "error"
+    return "npt_br" if agent.nvt(
+        PATH,
+        # GMX = GMX,
+    ) else "error"
 
 def npt_br():
-    return "npt_pr" if agent.npt_br(PATH) else "error"
+    return "npt_pr" if agent.npt_br(
+        PATH,
+        # GMX = GMX,
+    ) else "error"
 
 def npt_pr():
-    return "finish" if agent.npt_pr(PATH) else "error"
+    return "finish" if agent.npt_pr(
+        PATH,
+        # GMX = GMX,
+    ) else "error"
 
 def error():
     print("simulation failed")
