@@ -9,6 +9,7 @@ DISTANCE = None
 REFERENCE_MDP_PATH = None
 simulation_info = ""
 GMX = None
+PYMOL = None
 
 def start():
     agent.initialization(PATH)
