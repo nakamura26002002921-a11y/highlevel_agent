@@ -22,7 +22,7 @@ def get_pdb():
     return "simulation_set"
 
 def copy_mdp():
-    return "minimization" if agent.copy_mdp(PATH, REFERENCE_MDP_PATH) else "error"
+    return "system_build" if agent.copy_mdp(PATH, REFERENCE_MDP_PATH) else "error"
     
 def simulation_set():
     global WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE
