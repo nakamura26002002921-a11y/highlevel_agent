@@ -1,15 +1,15 @@
 import lowlevel_agent.md_simulation.agent as agent
-PATH = ""
+PATH = "your_path_here"
 PDBID = ""
+REFERENCE_MDP_PATH = None
+simulation_info = ""
+GMX = "gmx"
+PYMOL = "pymol"
 PDB_PATH = None
 WATER_MODEL = None
 FORCE_FIELD = None
 WATERBOXFILE = None
 DISTANCE = None
-REFERENCE_MDP_PATH = None
-simulation_info = ""
-GMX = None
-PYMOL = None
 
 def start():
     agent.initialization(PATH)
@@ -21,14 +21,14 @@ def get_pdb():
     if not result:
         return "error"
     PDB_PATH = result
-    return "simulation_set"
+    return "copy_mdp"
 
 def copy_mdp():
-    return "system_build" if agent.copy_mdp(PATH, REFERENCE_MDP_PATH) else "error"
-    
+    return "simulation_set" if agent.copy_mdp(PATH, REFERENCE_MDP_PATH) else "error"
+
 def simulation_set():
     global WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE
-    result = agent.simulation_set(PATH,simulation_info)
+    result = agent.simulation_set(PATH, simulation_info)
     if not result:
         return "error"
     WATER_MODEL, FORCE_FIELD, WATERBOXFILE, DISTANCE = result
@@ -42,59 +42,43 @@ def system_build():
         DISTANCE=DISTANCE,
         WATER_MODEL=WATER_MODEL,
         WATERBOXFILE=WATERBOXFILE,
-        # GMX = GMX,
-        # PYMOL = PYMOL,
+        GMX=GMX,
+        PYMOL=PYMOL,
     ) else "error"
 
 def minimization():
-    return "nvt" if agent.minimization(
-        PATH,
-        # GMX = GMX,
-    ) else "error"
+    return "nvt" if agent.minimization(PATH, GMX=GMX) else "error"
 
 def nvt():
-    return "npt_br" if agent.nvt(
-        PATH,
-        # GMX = GMX,
-    ) else "error"
+    return "npt_br" if agent.nvt(PATH, GMX=GMX) else "error"
 
 def npt_br():
-    return "npt_pr" if agent.npt_br(
-        PATH,
-        # GMX = GMX,
-    ) else "error"
+    return "npt_pr" if agent.npt_br(PATH, GMX=GMX) else "error"
 
 def npt_pr():
-    return "finish" if agent.npt_pr(
-        PATH,
-        # GMX = GMX,
-    ) else "error"
+    return "md" if agent.npt_pr(PATH, GMX=GMX) else "error"
+
+def md():
+    return "finish" if agent.md(PATH, GMX=GMX) else "error"
 
 def error():
-    print("simulation failed")
+    print("❌ simulation failed")
     return "finish"
 
-FUNCTIONS = {
-    "start": start,
-    "get_pdb": get_pdb,
-    "copy_mdp":copy_mdp,
-    "simulation_set": simulation_set,
-    "system_build": system_build,
-    "minimization": minimization,
-    "nvt": nvt,
-    "npt_br": npt_br,
-    "npt_pr": npt_pr,
-    "error": error,
-}
 def run():
     state = "start"
     while state != "finish":
-        print("state:", state)
-        try:
-            state = FUNCTIONS[state]()
-        except KeyError:
-            print("unknown state:", state)
+        print(f"▶ state: {state}")
+        func = globals().get(state)
+        if not func:
+            print(f"❌ unknown state: {state}")
             break
-    print("finished")
+        try:
+            state = func()
+        except Exception as e:
+            print(f"💥 error in {state}: {e}")
+            state = "error"
+    print("✅ finished")
+
 if __name__ == "__main__":
     run()
